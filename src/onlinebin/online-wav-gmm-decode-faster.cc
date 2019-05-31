@@ -93,10 +93,10 @@ int main(int argc, char *argv[]) {
         alignment_wspecifier = po.GetArg(7),   //对齐写入表  这个指向的是文件ali.txt
         lda_mat_rspecifier = po.GetOptArg(8);   //lda矩阵读取  
 
-    std::vector<int32> silence_phones;
-    if (!SplitStringToIntegers(silence_phones_str, ":", false, &silence_phones))
+    std::vector<int32> silence_phones;//定义安静音素的容器
+    if (!SplitStringToIntegers(silence_phones_str, ":", false, &silence_phones)) //如果以冒号进行切分并从string转成int型失败的话,报错
         KALDI_ERR << "Invalid silence-phones string " << silence_phones_str;
-    if (silence_phones.empty())
+    if (silence_phones.empty()) // 如果容器silence_phones为空，也就是没有任何输入的话，报错
         KALDI_ERR << "No silence phones given!";
 
     Int32VectorWriter words_writer(words_wspecifier);
