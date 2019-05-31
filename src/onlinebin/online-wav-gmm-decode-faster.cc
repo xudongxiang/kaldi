@@ -219,7 +219,7 @@ int main(int argc, char *argv[]) {
           partial_res = false;
 
           decoder.GetBestPath(&out_fst); //获得最优路径
-          std::vector<int32> tids; //向量容器 tids
+          std::vector<int32> tids; //向量容器 tids  这里表示的是transition_id
           // 获得线性符号队列
           fst::GetLinearSymbolSequence(out_fst,
                                        &tids,
