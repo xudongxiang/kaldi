@@ -164,8 +164,8 @@ int main(int argc, char *argv[]) {
           }
         }
       }
-      OnlineVectorSource au_src(wav_data.Data().Row(this_chan));
-      Mfcc mfcc(mfcc_opts);
+      OnlineVectorSource au_src(wav_data.Data().Row(this_chan));  //audio_source 
+      Mfcc mfcc(mfcc_opts); //新建一个类mfcc，输入mfcc的参数
       FeInput fe_input(&au_src, &mfcc,
                        frame_length*(wav_data.SampFreq()/1000),
                        frame_shift*(wav_data.SampFreq()/1000));
