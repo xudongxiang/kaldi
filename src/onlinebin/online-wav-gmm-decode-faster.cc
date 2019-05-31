@@ -84,14 +84,14 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     
-    std::string wav_rspecifier = po.GetArg(1),
-        model_rspecifier = po.GetArg(2),
-        fst_rspecifier = po.GetArg(3),
-        word_syms_filename = po.GetArg(4),
-        silence_phones_str = po.GetArg(5),
-        words_wspecifier = po.GetArg(6),
-        alignment_wspecifier = po.GetArg(7),
-        lda_mat_rspecifier = po.GetOptArg(8);
+    std::string wav_rspecifier = po.GetArg(1),  //rspecifier表示从kaldi的表中读取数据 input.scp 这里存放的是需要识别的语音的路径
+        model_rspecifier = po.GetArg(2),    // model读取  指向的文件是声学模型final.mdl
+        fst_rspecifier = po.GetArg(3),    //fst读取 这个应该是解码图 指向的是HCLG.fst
+        word_syms_filename = po.GetArg(4),    //词信号的名字 这个指向的是words.txt
+        silence_phones_str = po.GetArg(5),    //安静音素 这个输入的是'1:2:3:4:5'
+        words_wspecifier = po.GetArg(6),    //词写入表  这个指向的时输出文件trans.txt
+        alignment_wspecifier = po.GetArg(7),   //对齐写入表  这个指向的是文件ali.txt
+        lda_mat_rspecifier = po.GetOptArg(8);   //lda矩阵读取  
 
     std::vector<int32> silence_phones;
     if (!SplitStringToIntegers(silence_phones_str, ":", false, &silence_phones))
