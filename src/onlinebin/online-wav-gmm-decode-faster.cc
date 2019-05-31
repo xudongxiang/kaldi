@@ -187,14 +187,14 @@ int main(int argc, char *argv[]) {
 
       OnlineDecodableDiagGmmScaled decodable(am_gmm, trans_model, acoustic_scale,
                                              &feature_matrix);
-      int32 start_frame = 0;
-      bool partial_res = false;
-      decoder.InitDecoding();
+      int32 start_frame = 0;//定义开始帧
+      bool partial_res = false; //partical_result  部分结果
+      decoder.InitDecoding(); //初始化解码器
       while (1) {
-        OnlineFasterDecoder::DecodeState dstate = decoder.Decode(&decodable);
+        OnlineFasterDecoder::DecodeState dstate = decoder.Decode(&decodable); //dstate也就是解码状态
         if (dstate & (decoder.kEndFeats | decoder.kEndUtt)) {
-          std::vector<int32> word_ids;
-          decoder.FinishTraceBack(&out_fst);
+          std::vector<int32> word_ids;//向量容器 word_ids
+          decoder.FinishTraceBack(&out_fst); //解码器中的完成回溯函数
           fst::GetLinearSymbolSequence(out_fst,
                                        static_cast<vector<int32> *>(0),
                                        &word_ids,
@@ -202,21 +202,23 @@ int main(int argc, char *argv[]) {
           PrintPartialResult(word_ids, word_syms, partial_res || word_ids.size());
           partial_res = false;
 
-          decoder.GetBestPath(&out_fst);
-          std::vector<int32> tids;
+          decoder.GetBestPath(&out_fst); //获得最优路径
+          std::vector<int32> tids; //向量容器 tids
+          // 获得线性符号队列
           fst::GetLinearSymbolSequence(out_fst,
                                        &tids,
                                        &word_ids,
                                        static_cast<LatticeArc::Weight*>(0));
-          std::stringstream res_key;
+          std::stringstream res_key;  //stringstream 一种数据类型转化的工具 
           res_key << wav_key << '_' << start_frame << '-' << decoder.frame();
-          if (!word_ids.empty())
-            words_writer.Write(res_key.str(), word_ids);
-          alignment_writer.Write(res_key.str(), tids);
-          if (dstate == decoder.kEndFeats)
+          if (!word_ids.empty()) //如果word_ids容器为非空的
+            words_writer.Write(res_key.str(), word_ids);//在words_writer中写入
+          alignment_writer.Write(res_key.str(), tids); //在alignment_write中写入
+          if (dstate == decoder.kEndFeats) //如果解码状态等于解码器的最后特征，则退出解码
             break;
-          start_frame = decoder.frame();
-        } else {
+          start_frame = decoder.frame(); //开始帧为解码器的帧
+        } 
+        else {
           std::vector<int32> word_ids;
           if (decoder.PartialTraceback(&out_fst)) {
             fst::GetLinearSymbolSequence(out_fst,
@@ -229,12 +231,14 @@ int main(int argc, char *argv[]) {
           }
         }
       }
-      delete feat_transform;
+      delete feat_transform; //删除特征装换
     }
-    delete word_syms;
-    delete decode_fst;
+    delete word_syms;//删除词信号
+    delete decode_fst;//删除解码fst
     return 0;
-  } catch(const std::exception& e) {
+  } 
+  //如果有意外发生的haul输出问题信息并退出
+  catch(const std::exception& e) {
     std::cerr << e.what();
     return -1;
   }
