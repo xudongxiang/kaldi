@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     typedef OnlineFeInput<Mfcc> FeInput;
 
     // up to delta-delta derivative features are calculated (unless LDA is used)
-    const int32 kDeltaOrder = 2;
+    const int32 kDeltaOrder = 2; //这里应该是求二阶导的意思，表示计算mfcc再加上一阶差分与二阶差分特征
 
     const char *usage =
         "Reads in wav file(s) and simulates online decoding.\n"
