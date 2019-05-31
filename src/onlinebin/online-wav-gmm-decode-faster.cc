@@ -184,7 +184,7 @@ int main(int argc, char *argv[]) {
       // feature_reading_opts contains number of retries, batch size.
       OnlineFeatureMatrix feature_matrix(feature_reading_opts,
                                          feat_transform);
-
+      //am_gmm 为声学gmm模型 am表示声学模型
       OnlineDecodableDiagGmmScaled decodable(am_gmm, trans_model, acoustic_scale,
                                              &feature_matrix);
       int32 start_frame = 0;//定义开始帧
