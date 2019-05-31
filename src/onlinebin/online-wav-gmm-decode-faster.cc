@@ -222,7 +222,7 @@ int main(int argc, char *argv[]) {
           std::vector<int32> word_ids;
           if (decoder.PartialTraceback(&out_fst)) {
             fst::GetLinearSymbolSequence(out_fst,
-                                        static_cast<vector<int32> *>(0),
+                                        static_cast<vector<int32> *>(0), //static_cast为强制类型转换
                                         &word_ids,
                                         static_cast<LatticeArc::Weight*>(0));
             PrintPartialResult(word_ids, word_syms, false);
@@ -231,7 +231,7 @@ int main(int argc, char *argv[]) {
           }
         }
       }
-      delete feat_transform; //删除特征装换
+      delete feat_transform; //删除特征转换
     }
     delete word_syms;//删除词信号
     delete decode_fst;//删除解码fst
