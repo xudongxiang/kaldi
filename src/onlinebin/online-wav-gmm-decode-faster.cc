@@ -164,12 +164,28 @@ int main(int argc, char *argv[]) {
           }
         }
       }
+      //    -------之前都是各种参数设置与检查-------
+      // 1 语音源
       OnlineVectorSource au_src(wav_data.Data().Row(this_chan));  //audio_source 
+      // 2 mfcc设置
       Mfcc mfcc(mfcc_opts); //新建一个类mfcc，输入mfcc的参数
+      //3 特征输入 输入参数有语音源 mfcc参数 以及帧长与帧移
       FeInput fe_input(&au_src, &mfcc,
                        frame_length*(wav_data.SampFreq()/1000),
                        frame_shift*(wav_data.SampFreq()/1000));
+      //4 cmn输入   输入参数有上一步骤的特征 cmn的窗大小与最小cmn的窗大小
       OnlineCmnInput cmn_input(&fe_input, cmn_window, min_cmn_window);
+      //5 特征转换
+            /*
+            kaldi 中表的概念
+
+            表是字符索引-对象的集合，有两种对象存储于磁盘 
+            “scp”（script）机制：.scp文件从key（字串）映射到文件名或者pipe 
+            “ark”（archive）机制：数据存储在一个文件中。 
+            Kaldi 中表 
+            一个表存在两种形式：”archive”和”script file”，他们的区别是archive实际上存储了数据，而script文件内容指向实际数据存储的索引。 
+            从表中读取索引数据的程序被称为”rspecifier”，向表中写入字串的程序被称为”wspecifier”。
+            */
       OnlineFeatInputItf *feat_transform = 0;
       if (lda_mat_rspecifier != "") {
         feat_transform = new OnlineLdaInput(
