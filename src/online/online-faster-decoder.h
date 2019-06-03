@@ -94,9 +94,11 @@ class OnlineFasterDecoder : public FasterDecoder {
   // Makes a linear graph, by tracing back from the best currently active token
   // to the last immortal token. This method is meant to be invoked at the end
   // of an utterance in order to get the last chunk of the hypothesis
+  //通过从当前最佳活动令牌到最后一个不朽令牌的回溯, 制作线性图。这个方法是为了得到假设的最后一块, 在话语结束时调用
   void FinishTraceBack(fst::MutableFst<LatticeArc> *fst_out);
 
   // Returns "true" if the best current hypothesis ends with long enough silence
+  //如果当前的最佳假设以足够长的静默结束, 则返回 "true"
   bool EndOfUtterance();
 
   int32 frame() { return frame_; }
@@ -104,16 +106,18 @@ class OnlineFasterDecoder : public FasterDecoder {
  private:
   void ResetDecoder(bool full);
 
-  // Returns a linear fst by tracing back the last N frames, beginning
-  // from the best current token
+  // Returns a linear fst by tracing back the last N frames, beginning from the best current token
+  //通过跟踪最后一个 N 帧 (从最佳当前令牌开始) 返回线性 fst
   void TracebackNFrames(int32 nframes, fst::MutableFst<LatticeArc> *out_fst);
 
   // Makes a linear "lattice", by tracing back a path delimited by two tokens
+  //通过回溯由两个标记分隔的路径, 创建线性  "格"
   void MakeLattice(const Token *start,
                    const Token *end,
                    fst::MutableFst<LatticeArc> *out_fst) const;
 
   // Searches for the last token, ancestor of all currently active tokens
+  //搜索最后一个令牌, 所有当前活动令牌的祖先
   void UpdateImmortalToken();
 
   const OnlineFasterDecoderOpts opts_;
